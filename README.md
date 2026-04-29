@@ -184,13 +184,13 @@ Utiliza otro puerto de tu preferencia
 ---
 
 
-# 📄 Licencia
+# Licencia
 
 MIT
 
 ---
 
-# 👨‍💻 Autores
+# Autores
 
 Proyecto universitario - InnovaPyme
 
