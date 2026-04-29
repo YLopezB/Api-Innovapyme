@@ -2,6 +2,8 @@ import express from 'express';
 import "dotenv/config.js";
 import cors from 'cors';
 import morgan from 'morgan';
+import swaggerUi from 'swagger-ui-express';
+import specs from './config/swagger/swagger.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,5 +14,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 app.use(morgan('dev'));
+
+//Swagger config
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs));
+
+//Rutas
 
 app.listen(PORT, ready);
