@@ -1,0 +1,24 @@
+{
+  "name": "api-innovapyme",
+  "version": "1.0.0",
+  "description": "Proyecto innovapyme para que microempresarios lleven registros de inventarios, ventas e historial",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YLopezB/Api-Innovapyme.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/YLopezB/Api-Innovapyme/issues"
+  },
+  "homepage": "https://github.com/YLopezB/Api-Innovapyme#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
