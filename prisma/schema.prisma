@@ -30,3 +30,11 @@ model Tipo_usuario {
   descripcion String?
 }
 
+model Historial {
+  id    Int     @id @default(autoincrement())
+  accion Int
+  modulo String
+  descripcion String
+  fecha_evento DateTime @default(now())
+}
+
