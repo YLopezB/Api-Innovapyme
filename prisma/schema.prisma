@@ -24,3 +24,9 @@ model Usuario {
 
 }
 
+model Tipo_usuario {
+  id    Int     @id @default(autoincrement())
+  nombre String
+  descripcion String?
+}
+
