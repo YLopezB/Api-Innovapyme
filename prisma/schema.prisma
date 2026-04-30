@@ -22,12 +22,21 @@ model Usuario {
   estado  Boolean @default(true)
   fecha_creacion DateTime @default(now())
 
+  id_tipo_usuario Int
+  tipo_usuario Tipo_usuario @relation(fields: [id_tipo_usuario], references: [id])
+
+  historiales Historial[]
+  inventarios Inventario[]
+  ventas Venta[]
+
 }
 
 model Tipo_usuario {
   id    Int     @id @default(autoincrement())
   nombre String
   descripcion String?
+
+  usuarios Usuario[]
 }
 
 model Historial {
@@ -36,6 +45,9 @@ model Historial {
   modulo String
   descripcion String
   fecha_evento DateTime @default(now())
+
+  id_usuario Int
+  usuario Usuario @relation(fields: [id_usuario], references: [id])
 }
 
 model Inventario {
@@ -47,6 +59,9 @@ model Inventario {
   categoria String?
   fecha_registro DateTime @default(now())
   fecha_actualizacion DateTime @updatedAt
+
+  id_usuario Int
+  usuario Usuario @relation(fields: [id_usuario], references: [id])
 }
 
 model Venta {
@@ -55,5 +70,8 @@ model Venta {
   cantidad Int
   precio_unitario Float
   total Float
+
+  id_usuario Int
+  usuario Usuario @relation(fields: [id_usuario], references: [id])
 }
 
