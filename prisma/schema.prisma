@@ -12,9 +12,15 @@ datasource db {
   provider = "mysql"
 }
 
-model User {
+model Usuario {
   id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  password String?
+  nombre String
+  apellido String
+  correo String  @unique
+  contrasena String
+  telefono String?
+  estado  Boolean @default(true)
+  fecha_creacion DateTime @default(now())
+
 }
+
