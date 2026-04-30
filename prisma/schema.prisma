@@ -38,3 +38,14 @@ model Historial {
   fecha_evento DateTime @default(now())
 }
 
+model Inventario {
+  id    Int     @id @default(autoincrement())
+  nombre_producto String
+  descripcion String?
+  cantidad Int
+  precio_unitario Float
+  categoria String?
+  fecha_registro DateTime @default(now())
+  fecha_actualizacion DateTime @updatedAt
+}
+
