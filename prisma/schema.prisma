@@ -62,6 +62,8 @@ model Inventario {
 
   id_usuario Int
   usuario Usuario @relation(fields: [id_usuario], references: [id])
+
+  Ventas Venta[]
 }
 
 model Venta {
@@ -73,5 +75,8 @@ model Venta {
 
   id_usuario Int
   usuario Usuario @relation(fields: [id_usuario], references: [id])
+
+  id_inventario Int
+  inventario Inventario @relation(fields: [id_inventario], references: [id])
 }
 
