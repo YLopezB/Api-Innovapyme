@@ -49,3 +49,11 @@ model Inventario {
   fecha_actualizacion DateTime @updatedAt
 }
 
+model Venta {
+  id    Int     @id @default(autoincrement())
+  fecha_venta DateTime @default(now())
+  cantidad Int
+  precio_unitario Float
+  total Float
+}
+
