@@ -1,5 +1,7 @@
 import express from 'express';
-import "dotenv/config.js";
+import dotenvExpand from 'dotenv-expand';
+import dotenv from 'dotenv';
+dotenvExpand.expand(dotenv.config());
 import cors from 'cors';
 import morgan from 'morgan';
 import swaggerUi from 'swagger-ui-express';
