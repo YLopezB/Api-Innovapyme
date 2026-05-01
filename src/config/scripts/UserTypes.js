@@ -1,13 +1,19 @@
 import { createManyUsersTypes } from "../../repositories/UserType/createUserType.js";
 
 const userTypes = [
-  { nombre: "Administrador" },
-  { nombre: "Cliente" },
-  { nombre: "Visitante" },
+  { nombre: "Administrador",
+    descripcion: "Usuario con permisos de administrador"
+   },
+  { nombre: "Cliente",
+    descripcion: "Usuario con permisos de cliente"
+   },
+  { nombre: "Visitante",
+    descripcion: "Usuario con permisos de visitante"
+   },
 ];
 
-createManyUsersTypes(userTypes);
+await createManyUsersTypes(userTypes);
 
 console.log("Tipos de usuario creados exitosamente");
 
-process.exit(1)
+process.exit(0)
