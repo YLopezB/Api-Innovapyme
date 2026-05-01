@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/index.js",
-    "dev": "nodemon --no-deprecation src/index.js"
+    "dev": "nodemon --no-deprecation src/index.js",
+    "seed": "node src/config/scripts/UserTypes.js"
   },
   "repository": {
     "type": "git",

@@ -121,10 +121,18 @@ Ejecuta migraciones existentes y no modifica datos existentes
 ### Modo desarrollo:
 
 ```bash
+npm run seed
+```
+
+```bash
 npm run dev
 ```
 
 ### Modo producción:
+
+```bash
+npm run seed
+```
 
 ```bash
 npm start
