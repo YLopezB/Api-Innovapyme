@@ -1,4 +1,6 @@
 import { createManyUsersTypes } from "../../repositories/UserType/createUserType.js";
+import { readUserTypes } from "../../repositories/UserType/readUserType.js";
+import prisma from "../database.js";
 
 const userTypes = [
   { nombre: "Administrador",
@@ -12,8 +14,26 @@ const userTypes = [
    },
 ];
 
-await createManyUsersTypes(userTypes);
+try {
+  const existingUserTypes = await readUserTypes({
+    nombre: { in: userTypes.map((type) => type.nombre) },
+  });
 
-console.log("Tipos de usuario creados exitosamente");
+  const existingNames = new Set(existingUserTypes.map((type) => type.nombre));
+  const missingUserTypes = userTypes.filter(
+    (type) => !existingNames.has(type.nombre)
+  );
 
-process.exit(0)
+  if (missingUserTypes.length > 0) {
+    await createManyUsersTypes(missingUserTypes);
+  }
+
+  console.log(
+    `Seed de tipos de usuario completado. Creados: ${missingUserTypes.length}, ya existentes: ${userTypes.length - missingUserTypes.length}`
+  );
+} catch (error) {
+  console.error("Error ejecutando seed de tipos de usuario:", error);
+  process.exitCode = 1;
+} finally {
+  await prisma.$disconnect();
+}
