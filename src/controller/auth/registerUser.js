@@ -1,3 +1,4 @@
+import { log } from "node:console";
 import createUser from "../../repositories/user/createUser.js";
 
 export default async (req, res, next ) => {
@@ -10,6 +11,7 @@ export default async (req, res, next ) => {
         success: true,
     });
     } catch (error) {
+        console.log('Error en registerUser:', error);
         next(error);
     }
 }
