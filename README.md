@@ -100,6 +100,7 @@ JWT_SECRET=un_secreto_muy_seguro
 
 ```bash
 npx prisma migrate dev
+npx prisma generate
 ```
 
 Crea tablas automáticamente y genera historial de migraciones

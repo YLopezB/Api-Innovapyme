@@ -14,6 +14,22 @@ const userTypes = [
    },
 ];
 
+const admin = {
+  nombre: "Administrador",
+  apellido: "Principal",
+  correo: "admin@example.com",
+  contrasena: "admin123",
+  telefono: "3123456789"
+};
+
+async (admin) => {
+  return await prisma.usuario.upsert({
+    where: { correo: admin.correo },
+    update: {},
+    create: admin,
+  });
+};
+
 try {
   const existingUserTypes = await readUserTypes({
     nombre: { in: userTypes.map((type) => type.nombre) },

@@ -46,9 +46,6 @@ const routerAuth = Router();
  *               telefono:
  *                 type: string
  *                 example: "3123456789"
- *               id_tipo_usuario:
- *                 type: number
- *                 example: 1
  *     responses:
  *       201:
  *         description: Usuario registrado exitosamente
