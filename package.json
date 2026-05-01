@@ -4,7 +4,10 @@
   "description": "Proyecto innovapyme para que microempresarios lleven registros de inventarios, ventas e historial",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js",
+    "dev": "nodemon --no-deprecation src/index.js",
+    "seed": "node src/config/scripts/UserTypes.js"
   },
   "repository": {
     "type": "git",
@@ -12,13 +15,30 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "type": "commonjs",
+  "license": "MIT",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/YLopezB/Api-Innovapyme/issues"
   },
   "homepage": "https://github.com/YLopezB/Api-Innovapyme#readme",
   "dependencies": {
-    "express": "^5.2.1"
+    "@prisma/adapter-mariadb": "^7.8.0",
+    "@prisma/client": "^7.8.0",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "dotenv-expand": "^13.0.0",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "morgan": "^1.10.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "nodemon": "^3.1.14",
+    "prisma": "^7.8.0",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3"
   }
 }

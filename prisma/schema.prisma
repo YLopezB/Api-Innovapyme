@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model Usuario {
+  id    Int     @id @default(autoincrement())
+  nombre String
+  apellido String
+  correo String  @unique
+  contrasena String
+  telefono String?
+  estado  Boolean @default(true)
+  fecha_creacion DateTime @default(now())
+
+  id_tipo_usuario Int
+  tipo_usuario Tipo_usuario @relation(fields: [id_tipo_usuario], references: [id])
+
+  historiales Historial[]
+  inventarios Inventario[]
+  ventas Venta[]
+
+}
+
+model Tipo_usuario {
+  id    Int     @id @default(autoincrement())
+  nombre String
+  descripcion String?
+
+  usuarios Usuario[]
+}
+
+model Historial {
+  id    Int     @id @default(autoincrement())
+  accion Int
+  modulo String
+  descripcion String
+  fecha_evento DateTime @default(now())
+
+  id_usuario Int
+  usuario Usuario @relation(fields: [id_usuario], references: [id])
+}
+
+model Inventario {
+  id    Int     @id @default(autoincrement())
+  nombre_producto String
+  descripcion String?
+  cantidad Int
+  precio_unitario Float
+  categoria String?
+  fecha_registro DateTime @default(now())
+  fecha_actualizacion DateTime @updatedAt
+
+  id_usuario Int
+  usuario Usuario @relation(fields: [id_usuario], references: [id])
+
+  Ventas Venta[]
+}
+
+model Venta {
+  id    Int     @id @default(autoincrement())
+  fecha_venta DateTime @default(now())
+  cantidad Int
+  precio_unitario Float
+  total Float
+
+  id_usuario Int
+  usuario Usuario @relation(fields: [id_usuario], references: [id])
+
+  id_inventario Int
+  inventario Inventario @relation(fields: [id_inventario], references: [id])
+}
+
