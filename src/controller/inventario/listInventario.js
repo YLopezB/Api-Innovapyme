@@ -1,17 +1,5 @@
 import findInventarioPaginated from "../../repositories/inventario/listInventario.js";
-
-function mapProducto(row) {
-  return {
-    id: row.id,
-    nombre: row.nombre_producto,
-    descripcion: row.descripcion,
-    cantidad: row.cantidad,
-    precio_unitario: row.precio_unitario,
-    categoria: row.categoria,
-    fecha_registro: row.fecha_registro,
-    fecha_actualizacion: row.fecha_actualizacion,
-  };
-}
+import { mapProducto } from "./mapProducto.js";
 
 export default async (req, res, next) => {
   try {

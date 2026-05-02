@@ -1,5 +1,6 @@
 import { Router } from "express";
 import listInventario from "../controller/inventario/listInventario.js";
+import getInventarioById from "../controller/inventario/getInventarioById.js";
 
 const routerInventario = Router();
 
@@ -33,6 +34,26 @@ const routerInventario = Router();
  *         description: Lista paginada
  */
 
+/**
+ * @swagger
+ * /api/inventario/{id}:
+ *   get:
+ *     summary: Obtener producto por ID
+ *     tags: [Inventario]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Producto encontrado
+ *       404:
+ *         description: No encontrado
+ */
+
 routerInventario.get("/", listInventario);
+routerInventario.get("/:id", getInventarioById);
 
 export default routerInventario;
