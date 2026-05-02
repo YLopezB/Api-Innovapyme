@@ -4,6 +4,7 @@ import getInventarioById from "../controller/inventario/getInventarioById.js";
 import createInventario from "../controller/inventario/createInventario.js";
 import updateInventario from "../controller/inventario/updateInventario.js";
 import deleteInventario from "../controller/inventario/deleteInventario.js";
+import verifyToken from "../middlewares/verifyToken.js";
 
 const routerInventario = Router();
 
@@ -159,10 +160,10 @@ const routerInventario = Router();
  *         description: Datos inválidos
  */
 
-routerInventario.get("/", listInventario);
-routerInventario.post("/", createInventario);
-routerInventario.get("/:id", getInventarioById);
-routerInventario.put("/:id", updateInventario);
-routerInventario.delete("/:id", deleteInventario);
+routerInventario.get("/", verifyToken, listInventario);
+routerInventario.post("/", verifyToken, createInventario);
+routerInventario.get("/:id", verifyToken, getInventarioById);
+routerInventario.put("/:id", verifyToken, updateInventario);
+routerInventario.delete("/:id", verifyToken, deleteInventario);
 
 export default routerInventario;
