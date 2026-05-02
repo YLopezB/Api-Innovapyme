@@ -52,3 +52,70 @@ export function validateCreate(payload) {
   }
   return null;
 }
+
+/** Campos parciales; claves alineadas a Prisma (nombre → nombre_producto). */
+export function normalizeUpdateBody(body) {
+  const out = {};
+
+  if (body.nombre !== undefined) {
+    const nombre =
+      typeof body.nombre === "string" ? body.nombre.trim() : "";
+    out.nombre_producto = nombre;
+  }
+
+  if (body.descripcion !== undefined) {
+    if (body.descripcion === null) {
+      out.descripcion = null;
+    } else {
+      const s = String(body.descripcion).trim();
+      out.descripcion = s === "" ? null : s;
+    }
+  }
+
+  if (body.cantidad !== undefined) {
+    out.cantidad = body.cantidad;
+  }
+
+  if (body.precio_unitario !== undefined) {
+    out.precio_unitario = body.precio_unitario;
+  }
+
+  if (body.categoria !== undefined) {
+    if (body.categoria === null) {
+      out.categoria = null;
+    } else {
+      const s = String(body.categoria).trim();
+      out.categoria = s === "" ? null : s;
+    }
+  }
+
+  return out;
+}
+
+/** @returns {string | null} */
+export function validateUpdate(updateData) {
+  if (updateData.nombre_producto !== undefined) {
+    if (!updateData.nombre_producto) {
+      return "El nombre no puede estar vacío";
+    }
+  }
+  if (updateData.cantidad !== undefined) {
+    if (updateData.cantidad === null) {
+      return "cantidad debe ser un entero mayor o igual a 0";
+    }
+    const cantidad = Number(updateData.cantidad);
+    if (!Number.isInteger(cantidad) || cantidad < 0) {
+      return "cantidad debe ser un entero mayor o igual a 0";
+    }
+  }
+  if (updateData.precio_unitario !== undefined) {
+    if (updateData.precio_unitario === null) {
+      return "precio_unitario debe ser un número mayor o igual a 0";
+    }
+    const precio = Number(updateData.precio_unitario);
+    if (Number.isNaN(precio) || precio < 0) {
+      return "precio_unitario debe ser un número mayor o igual a 0";
+    }
+  }
+  return null;
+}

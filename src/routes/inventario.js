@@ -2,6 +2,7 @@ import { Router } from "express";
 import listInventario from "../controller/inventario/listInventario.js";
 import getInventarioById from "../controller/inventario/getInventarioById.js";
 import createInventario from "../controller/inventario/createInventario.js";
+import updateInventario from "../controller/inventario/updateInventario.js";
 
 const routerInventario = Router();
 
@@ -56,6 +57,47 @@ const routerInventario = Router();
 
 /**
  * @swagger
+ * /api/inventario/{id}:
+ *   put:
+ *     summary: Actualizar datos del producto
+ *     description: Actualización parcial; `fecha_actualizacion` la gestiona Prisma (@updatedAt).
+ *     tags: [Inventario]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *               descripcion:
+ *                 type: string
+ *                 nullable: true
+ *               cantidad:
+ *                 type: integer
+ *               precio_unitario:
+ *                 type: number
+ *               categoria:
+ *                 type: string
+ *                 nullable: true
+ *     responses:
+ *       200:
+ *         description: Actualizado
+ *       400:
+ *         description: Datos inválidos o cuerpo vacío
+ *       404:
+ *         description: No encontrado
+ */
+
+/**
+ * @swagger
  * /api/inventario:
  *   post:
  *     summary: Crear producto en inventario
@@ -97,5 +139,6 @@ const routerInventario = Router();
 routerInventario.get("/", listInventario);
 routerInventario.post("/", createInventario);
 routerInventario.get("/:id", getInventarioById);
+routerInventario.put("/:id", updateInventario);
 
 export default routerInventario;
