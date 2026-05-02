@@ -3,6 +3,7 @@ import listInventario from "../controller/inventario/listInventario.js";
 import getInventarioById from "../controller/inventario/getInventarioById.js";
 import createInventario from "../controller/inventario/createInventario.js";
 import updateInventario from "../controller/inventario/updateInventario.js";
+import deleteInventario from "../controller/inventario/deleteInventario.js";
 
 const routerInventario = Router();
 
@@ -98,6 +99,28 @@ const routerInventario = Router();
 
 /**
  * @swagger
+ * /api/inventario/{id}:
+ *   delete:
+ *     summary: Eliminar producto
+ *     description: No elimina si existen ventas asociadas a ese inventario.
+ *     tags: [Inventario]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Eliminado
+ *       400:
+ *         description: Tiene ventas asociadas
+ *       404:
+ *         description: No encontrado
+ */
+
+/**
+ * @swagger
  * /api/inventario:
  *   post:
  *     summary: Crear producto en inventario
@@ -140,5 +163,6 @@ routerInventario.get("/", listInventario);
 routerInventario.post("/", createInventario);
 routerInventario.get("/:id", getInventarioById);
 routerInventario.put("/:id", updateInventario);
+routerInventario.delete("/:id", deleteInventario);
 
 export default routerInventario;
