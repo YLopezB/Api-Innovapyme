@@ -19,6 +19,7 @@ export default async (req, res, next) => {
       correo: req.body.correo,
       contrasena: req.body.contrasena,
       telefono: req.body.telefono,
+      id_tipo_usuario: 3,
     };
     
     next();
