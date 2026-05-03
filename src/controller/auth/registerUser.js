@@ -11,7 +11,6 @@ export default async (req, res, next ) => {
         success: true,
     });
     } catch (error) {
-        console.log('Error en registerUser:', error);
         next(error);
     }
 }
