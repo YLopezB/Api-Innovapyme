@@ -38,8 +38,71 @@ const routerInventario = Router();
  *     responses:
  *       200:
  *         description: Lista paginada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         example: 1
+ *                       nombre:
+ *                         type: string
+ *                         example: "Producto 1"
+ *                       descripcion:
+ *                         type: string
+ *                         example: "Descripción del producto 1"
+ *                       cantidad:
+ *                         type: integer
+ *                         example: 10
+ *                       precio_unitario:
+ *                         type: number
+ *                         example: 100.00
+ *                       categoria:
+ *                         type: string
+ *                         example: "Categoria 1"
+ *                       fecha_creacion:
+ *                         type: string
+ *                         example: "2021-01-01"
+ *                       fecha_actualizacion:
+ *                         type: string
+ *                         example: "2021-01-01"
+ *                 meta:
+ *                   type: object
+ *                   properties:
+ *                     total:
+ *                       type: integer
+ *                       example: 100
+ *                     page:
+ *                       type: integer
+ *                       example: 1
+ *                     limit:
+ *                       type: integer
+ *                       example: 10
+ *                     total_pages:
+ *                       type: integer
+ *                       example: 10
  *       401:
  *         description: Token no proveído o inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Token no proveído o inválido
  */
 
 /**
@@ -59,10 +122,67 @@ const routerInventario = Router();
  *     responses:
  *       200:
  *         description: Producto encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       example: 1
+ *                     nombre:
+ *                       type: string
+ *                       example: "Producto 1"
+ *                     descripcion:
+ *                       type: string
+ *                       example: "Descripción del producto 1"
+ *                     cantidad:
+ *                       type: integer
+ *                       example: 10
+ *                     precio_unitario:
+ *                       type: number
+ *                       example: 100.00
+ *                     categoria:
+ *                       type: string
+ *                       example: "Categoria 1"
+ *                     fecha_creacion:
+ *                       type: string
+ *                       example: "2021-01-01"
+ *                     fecha_actualizacion:
+ *                       type: string
+ *                       example: "2021-01-01"
  *       401:
  *         description: Token no proveído o inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Token no proveído o inválido
  *       404:
  *         description: No encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: No encontrado
  */
 
 /**
@@ -102,12 +222,83 @@ const routerInventario = Router();
  *     responses:
  *       200:
  *         description: Actualizado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Actualizado
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       example: 1
+ *                     nombre:
+ *                       type: string
+ *                       example: "Producto 1"
+ *                     descripcion:
+ *                       type: string
+ *                       example: "Descripción del producto 1"
+ *                     cantidad:
+ *                       type: integer
+ *                       example: 10
+ *                     precio_unitario:
+ *                       type: number
+ *                       example: 100.00
+ *                     categoria:
+ *                       type: string
+ *                       example: "Categoria 1"
+ *                     fecha_creacion:
+ *                       type: string
+ *                       example: "2021-01-01"
+ *                     fecha_actualizacion:
+ *                       type: string
+ *                       example: "2021-01-01" 
  *       400:
  *         description: Datos inválidos o cuerpo vacío
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: El nombre no puede estar vacío
  *       401:
  *         description: Token no proveído o inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Token no proveído o inválido
  *       404:
  *         description: No encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: No encontrado
  */
 
 /**
@@ -128,12 +319,56 @@ const routerInventario = Router();
  *     responses:
  *       200:
  *         description: Eliminado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Eliminado
  *       400:
  *         description: Tiene ventas asociadas
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Tiene ventas
  *       401:
  *         description: Token no proveído o inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Token no proveído o inválido
  *       404:
  *         description: No encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: No encontrado
  */
 
 /**
@@ -170,10 +405,70 @@ const routerInventario = Router();
  *     responses:
  *       201:
  *         description: Producto creado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Producto creado
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       example: 1
+ *                     nombre:
+ *                       type: string
+ *                       example: "Producto 1"
+ *                     descripcion:
+ *                       type: string
+ *                       example: "Descripción del producto 1"
+ *                     cantidad: 
+ *                       type: integer
+ *                       example: 10
+ *                     precio_unitario:
+ *                       type: number
+ *                       example: 100.00
+ *                     categoria:
+ *                       type: string
+ *                       example: "Categoria 1"
+ *                     fecha_creacion:
+ *                       type: string
+ *                       example: "2021-01-01"
+ *                     fecha_actualizacion:
+ *                       type: string
+ *                       example: "2021-01-01"
  *       400:
  *         description: Datos inválidos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: El nombre es requerido
  *       401:
  *         description: Token no proveído o inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Token no proveído o inválido
  */
 
 routerInventario.get("/", verifyToken, listInventario);

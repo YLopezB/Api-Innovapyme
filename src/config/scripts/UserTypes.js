@@ -55,6 +55,7 @@ const createAdminUser = async (admin) => {
 };
 
 await createAdminUser(admin);
+console.log("Usuario administrador creado correctamente");
 
 } catch (error) {
   console.error("Error ejecutando seed de tipos de usuario:", error);

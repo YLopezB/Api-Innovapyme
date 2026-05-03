@@ -12,7 +12,6 @@ export default async (req, res, next) => {
         message: "Correo duplicado",
       });
     }
-    console.log(req.usuario);
     req.usuario = {
       nombre: req.body.nombre,
       apellido: req.body.apellido,
