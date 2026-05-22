@@ -1,0 +1,68 @@
+name: CI - Api InnovaPyme
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-smoke-test:
+    name: Build, Prisma and Smoke Test
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          MYSQL_DATABASE: ${{ vars.DB_NAME }}
+        ports:
+          - ${{ vars.DB_PORT }}:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -u${{ secrets.DB_USER }} -p${{ secrets.DB_PASSWORD }}"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      PORT: ${{ vars.APP_PORT }}
+      DATABASE_USER: ${{ secrets.DB_USER }}
+      DATABASE_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DATABASE_NAME: ${{ vars.DB_NAME }}
+      DATABASE_HOST: ${{ vars.DB_HOST }}
+      DATABASE_PORT: ${{ vars.DB_PORT }}
+      DATABASE_URL: mysql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@${{ vars.DB_HOST }}:${{ vars.DB_PORT }}/${{ vars.DB_NAME }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
+      - name: Run Prisma migrations
+        run: npx prisma migrate deploy
+
+      - name: Run seed
+        run: npm run seed
+
+      - name: Start API
+        run: |
+          npm start &
+          sleep 10
+
+      - name: Smoke test Swagger docs
+        run: curl --fail http://localhost:${{ vars.APP_PORT }}/docs
