@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - main
+      - develop
 
 jobs:
   build-and-smoke-test:
@@ -18,9 +19,9 @@ jobs:
         image: mysql:8.4
         env:
           MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          MYSQL_DATABASE: ${{ vars.DB_NAME }}
+          MYSQL_DATABASE: ${{ vars.DATABASE_NAME }}
         ports:
-          - ${{ vars.DB_PORT }}:3306
+          - 3306:3306
         options: >-
           --health-cmd="mysqladmin ping --silent"
           --health-interval=10s
@@ -28,13 +29,13 @@ jobs:
           --health-retries=10
 
     env:
-      PORT: ${{ vars.APP_PORT }}
+      PORT: ${{ vars.PORT }}
       DATABASE_USER: ${{ secrets.DB_USER }}
       DATABASE_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      DATABASE_NAME: ${{ vars.DB_NAME }}
-      DATABASE_HOST: ${{ vars.DB_HOST }}
-      DATABASE_PORT: ${{ vars.DB_PORT }}
-      DATABASE_URL: mysql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@${{ vars.DB_HOST }}:${{ vars.DB_PORT }}/${{ vars.DB_NAME }}
+      DATABASE_NAME: ${{ vars.DATABASE_NAME }}
+      DATABASE_HOST: 127.0.0.1
+      DATABASE_PORT: 3306
+      DATABASE_URL: mysql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@127.0.0.1:3306/${{ vars.DATABASE_NAME }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
     steps:
@@ -68,4 +69,4 @@ jobs:
           sleep 10
 
       - name: Smoke test Swagger docs
-        run: curl --fail http://localhost:${{ vars.APP_PORT }}/docs
+        run: curl --fail http://localhost:${{ vars.PORT }}/docs
