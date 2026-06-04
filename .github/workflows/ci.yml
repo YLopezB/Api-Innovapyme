@@ -22,7 +22,7 @@ jobs:
         ports:
           - ${{ vars.DB_PORT }}:3306
         options: >-
-          --health-cmd="mysqladmin ping -h 127.0.0.1 -u${{ secrets.DB_USER }} -p${{ secrets.DB_PASSWORD }}"
+          --health-cmd="mysqladmin ping --silent"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=10
@@ -39,7 +39,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -58,6 +58,9 @@ jobs:
 
       - name: Run seed
         run: npm run seed
+
+      - name: Run integration tests
+        run: npm test
 
       - name: Start API
         run: |
