@@ -46,9 +46,6 @@ const routerAuth = Router();
  *               telefono:
  *                 type: string
  *                 example: "3123456789"
- *               id_tipo_usuario:
- *                 type: number
- *                 example: 1
  *     responses:
  *       201:
  *         description: Usuario registrado exitosamente
@@ -122,15 +119,15 @@ routerAuth.post(
  *             schema:
  *               type: object
  *               properties:
- *                 success:
- *                   type: boolean
- *                   example: true
  *                 message:
  *                   type: string
- *                   example: Login exitoso
+ *                   example: Usuario logueado correctamente
  *                 token:
  *                   type: string
  *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *                 success:
+ *                   type: boolean
+ *                   example: true
  *       401:
  *         description: Credenciales inválidas
  *         content:

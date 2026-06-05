@@ -8,18 +8,12 @@ import { mapProducto } from "./mapProducto.js";
 
 export default async (req, res, next) => {
   try {
-    const idUsuarioRaw = req.body.id_usuario;
-    const idUsuario = parseInt(String(idUsuarioRaw), 10);
-    if (
-      idUsuarioRaw === undefined ||
-      idUsuarioRaw === null ||
-      Number.isNaN(idUsuario) ||
-      idUsuario < 1
-    ) {
-      return res.status(400).json({
+    const idUsuarioRaw = req.usuario?.id;
+    const idUsuario = Number(idUsuarioRaw);
+    if (!idUsuario || Number.isNaN(idUsuario) || idUsuario < 1) {
+      return res.status(401).json({
         success: false,
-        message:
-          "Datos inválidos: id_usuario es requerido (hasta integrar JWT desde el token)",
+        message: "Token inválido o usuario no autenticado",
       });
     }
 

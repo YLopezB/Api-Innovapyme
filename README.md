@@ -100,6 +100,7 @@ JWT_SECRET=un_secreto_muy_seguro
 
 ```bash
 npx prisma migrate dev
+npx prisma generate
 ```
 
 Crea tablas automáticamente y genera historial de migraciones
@@ -123,6 +124,10 @@ Ejecuta migraciones existentes y no modifica datos existentes
 ```bash
 npm run seed
 ```
+
+>**Credenciales de administrador inicial:**  
+>Usuario: admin@example.com  
+>Contraseña: admin123
 
 ```bash
 npm run dev

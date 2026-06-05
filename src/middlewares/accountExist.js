@@ -12,14 +12,13 @@ export default async (req, res, next) => {
         message: "Correo duplicado",
       });
     }
-    console.log(req.usuario);
     req.usuario = {
       nombre: req.body.nombre,
       apellido: req.body.apellido,
       correo: req.body.correo,
       contrasena: req.body.contrasena,
       telefono: req.body.telefono,
-      id_tipo_usuario: req.body.id_tipo_usuario
+      id_tipo_usuario: 3,
     };
     
     next();

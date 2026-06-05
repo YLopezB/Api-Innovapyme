@@ -10,6 +10,15 @@ const options = {
       description:
         "API para gestionar inventarios, ventas e historial de microempresarios",
     },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
     contacts: [
       {
         name: "YLopezB",

@@ -4,6 +4,7 @@ import getInventarioById from "../controller/inventario/getInventarioById.js";
 import createInventario from "../controller/inventario/createInventario.js";
 import updateInventario from "../controller/inventario/updateInventario.js";
 import deleteInventario from "../controller/inventario/deleteInventario.js";
+import verifyToken from "../middlewares/verifyToken.js";
 
 const routerInventario = Router();
 
@@ -11,7 +12,7 @@ const routerInventario = Router();
  * @swagger
  * tags:
  *   name: Inventario
- *   description: Gestión de productos en inventario. La protección JWT se añadirá al integrar la base de autenticación (rama auth/JWT).
+ *   description: Gestión de productos en inventario. Requiere token JWT válido para todas las rutas.
  */
 
 /**
@@ -19,8 +20,10 @@ const routerInventario = Router();
  * /api/inventario:
  *   get:
  *     summary: Listar productos paginados
- *     description: Retorna `{ data, meta }`. Agregar middleware JWT en punto 1.
+ *     description: Retorna `{ data, meta }` con los productos del inventario.
  *     tags: [Inventario]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: query
  *         name: page
@@ -35,6 +38,71 @@ const routerInventario = Router();
  *     responses:
  *       200:
  *         description: Lista paginada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         example: 1
+ *                       nombre:
+ *                         type: string
+ *                         example: "Producto 1"
+ *                       descripcion:
+ *                         type: string
+ *                         example: "Descripción del producto 1"
+ *                       cantidad:
+ *                         type: integer
+ *                         example: 10
+ *                       precio_unitario:
+ *                         type: number
+ *                         example: 100.00
+ *                       categoria:
+ *                         type: string
+ *                         example: "Categoria 1"
+ *                       fecha_creacion:
+ *                         type: string
+ *                         example: "2021-01-01"
+ *                       fecha_actualizacion:
+ *                         type: string
+ *                         example: "2021-01-01"
+ *                 meta:
+ *                   type: object
+ *                   properties:
+ *                     total:
+ *                       type: integer
+ *                       example: 100
+ *                     page:
+ *                       type: integer
+ *                       example: 1
+ *                     limit:
+ *                       type: integer
+ *                       example: 10
+ *                     total_pages:
+ *                       type: integer
+ *                       example: 10
+ *       401:
+ *         description: Token no proveído o inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Token no proveído o inválido
  */
 
 /**
@@ -43,6 +111,8 @@ const routerInventario = Router();
  *   get:
  *     summary: Obtener producto por ID
  *     tags: [Inventario]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -52,8 +122,67 @@ const routerInventario = Router();
  *     responses:
  *       200:
  *         description: Producto encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       example: 1
+ *                     nombre:
+ *                       type: string
+ *                       example: "Producto 1"
+ *                     descripcion:
+ *                       type: string
+ *                       example: "Descripción del producto 1"
+ *                     cantidad:
+ *                       type: integer
+ *                       example: 10
+ *                     precio_unitario:
+ *                       type: number
+ *                       example: 100.00
+ *                     categoria:
+ *                       type: string
+ *                       example: "Categoria 1"
+ *                     fecha_creacion:
+ *                       type: string
+ *                       example: "2021-01-01"
+ *                     fecha_actualizacion:
+ *                       type: string
+ *                       example: "2021-01-01"
+ *       401:
+ *         description: Token no proveído o inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Token no proveído o inválido
  *       404:
  *         description: No encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: No encontrado
  */
 
 /**
@@ -61,8 +190,10 @@ const routerInventario = Router();
  * /api/inventario/{id}:
  *   put:
  *     summary: Actualizar datos del producto
- *     description: Actualización parcial; `fecha_actualizacion` la gestiona Prisma (@updatedAt).
+ *     description: Actualización parcial; `fecha_actualizacion` la gestiona Prisma.
  *     tags: [Inventario]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -91,10 +222,83 @@ const routerInventario = Router();
  *     responses:
  *       200:
  *         description: Actualizado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Actualizado
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       example: 1
+ *                     nombre:
+ *                       type: string
+ *                       example: "Producto 1"
+ *                     descripcion:
+ *                       type: string
+ *                       example: "Descripción del producto 1"
+ *                     cantidad:
+ *                       type: integer
+ *                       example: 10
+ *                     precio_unitario:
+ *                       type: number
+ *                       example: 100.00
+ *                     categoria:
+ *                       type: string
+ *                       example: "Categoria 1"
+ *                     fecha_creacion:
+ *                       type: string
+ *                       example: "2021-01-01"
+ *                     fecha_actualizacion:
+ *                       type: string
+ *                       example: "2021-01-01" 
  *       400:
  *         description: Datos inválidos o cuerpo vacío
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: El nombre no puede estar vacío
+ *       401:
+ *         description: Token no proveído o inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Token no proveído o inválido
  *       404:
  *         description: No encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: No encontrado
  */
 
 /**
@@ -104,6 +308,8 @@ const routerInventario = Router();
  *     summary: Eliminar producto
  *     description: No elimina si existen ventas asociadas a ese inventario.
  *     tags: [Inventario]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -113,10 +319,56 @@ const routerInventario = Router();
  *     responses:
  *       200:
  *         description: Eliminado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Eliminado
  *       400:
  *         description: Tiene ventas asociadas
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Tiene ventas
+ *       401:
+ *         description: Token no proveído o inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Token no proveído o inválido
  *       404:
  *         description: No encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: No encontrado
  */
 
 /**
@@ -124,8 +376,10 @@ const routerInventario = Router();
  * /api/inventario:
  *   post:
  *     summary: Crear producto en inventario
- *     description: Registra el producto y una entrada en Historial. `id_usuario` es temporal hasta que el JWT rellene el usuario (punto 1).
+ *     description: Registra el producto y genera un historial asociado al usuario autenticado.
  *     tags: [Inventario]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -136,11 +390,7 @@ const routerInventario = Router();
  *               - nombre
  *               - cantidad
  *               - precio_unitario
- *               - id_usuario
  *             properties:
- *               id_usuario:
- *                 type: integer
- *                 description: ID del usuario que realiza la acción (temporal sin JWT)
  *               nombre:
  *                 type: string
  *                 description: Nombre del producto (en BD se guarda como nombre_producto)
@@ -155,14 +405,76 @@ const routerInventario = Router();
  *     responses:
  *       201:
  *         description: Producto creado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Producto creado
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       example: 1
+ *                     nombre:
+ *                       type: string
+ *                       example: "Producto 1"
+ *                     descripcion:
+ *                       type: string
+ *                       example: "Descripción del producto 1"
+ *                     cantidad: 
+ *                       type: integer
+ *                       example: 10
+ *                     precio_unitario:
+ *                       type: number
+ *                       example: 100.00
+ *                     categoria:
+ *                       type: string
+ *                       example: "Categoria 1"
+ *                     fecha_creacion:
+ *                       type: string
+ *                       example: "2021-01-01"
+ *                     fecha_actualizacion:
+ *                       type: string
+ *                       example: "2021-01-01"
  *       400:
  *         description: Datos inválidos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: El nombre es requerido
+ *       401:
+ *         description: Token no proveído o inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Token no proveído o inválido
  */
 
-routerInventario.get("/", listInventario);
-routerInventario.post("/", createInventario);
-routerInventario.get("/:id", getInventarioById);
-routerInventario.put("/:id", updateInventario);
-routerInventario.delete("/:id", deleteInventario);
+routerInventario.get("/", verifyToken, listInventario);
+routerInventario.post("/", verifyToken, createInventario);
+routerInventario.get("/:id", verifyToken, getInventarioById);
+routerInventario.put("/:id", verifyToken, updateInventario);
+routerInventario.delete("/:id", verifyToken, deleteInventario);
 
 export default routerInventario;
