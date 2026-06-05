@@ -7,6 +7,9 @@ import accountNotExist from "../middlewares/accountNotExist.js";
 import compareHash from "../middlewares/compareHash.js";
 import userStatus from "../middlewares/userStatus.js";
 import loginUser from "../controller/auth/loginUser.js";
+import verifyToken from "../middlewares/verifyToken.js";
+import getUserProfile from "../controller/auth/getUserProfile.js";
+import updateUserProfile from "../controller/auth/updateUserProfile.js";
 
 const routerAuth = Router();
 
@@ -178,7 +181,180 @@ routerAuth.post(
   loginUser,
 );
 
-routerAuth.get("/perfil", userStatus);
-routerAuth.put("/perfil", userStatus);
+/**
+ * @swagger
+ * /api/auth/perfil:
+ *   get:
+ *     summary: Obtener perfil de usuario
+ *     description: Retorna el perfil del usuario autenticado
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Perfil de usuario obtenido exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Perfil de usuario
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       example: 1
+ *                     nombre:
+ *                       type: string
+ *                       example: Juan
+ *                     apellido:
+ *                       type: string
+ *                       example: Pérez
+ *                     correo:
+ *                       type: string
+ *                       format: email
+ *                       example: juan.perez@example.com
+ *                     telefono:
+ *                       type: string
+ *                       example: "3123456789"
+ *                     estado:
+ *                       type: boolean
+ *                       example: true
+ *                     fecha_creacion:
+ *                       type: string
+ *                       format: date-time
+ *                       example: "2024-01-01T00:00:00.000Z"
+ *
+ *       401:
+ *         description: Token no proporcionado o inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Token no proveído
+ */
+routerAuth.get("/perfil", verifyToken, getUserProfile);
+
+ /**
+  * @swagger
+  * /api/auth/perfil:
+  *   put:
+  *     summary: Actualizar perfil de usuario
+  *     description: Permite al usuario autenticado actualizar su perfil
+  *     tags: [Auth]
+  *     security:
+  *       - bearerAuth: []
+  *     requestBody:
+  *       required: true
+  *       content:
+  *         application/json:
+  *           schema:
+  *             type: object
+  *             properties:
+  *               nombre:
+  *                 type: string
+  *                 example: Juana
+  *               apellido:
+  *                 type: string
+  *                 example: Gómez
+  *               correo:
+  *                 type: string
+  *                 format: email
+  *                 example: juana.gomez@example.com
+  *               telefono:
+  *                 type: string
+  *                 example: "3098765432"
+  *
+  *     responses:
+  *       200:
+  *         description: Perfil actualizado exitosamente
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 success:
+  *                   type: boolean
+  *                   example: true
+  *                 message:
+  *                   type: string
+  *                   example: Actualizado
+  *                 data:
+  *                   type: object
+  *                   properties:
+  *                     id:
+  *                       type: integer
+  *                       example: 1
+  *                     nombre:
+  *                       type: string
+  *                       example: Juana
+  *                     apellido:
+  *                       type: string
+  *                       example: Gómez
+  *                     correo:
+  *                       type: string
+  *                       format: email
+  *                       example: juana.gomez@example.com
+  *                     telefono:
+  *                       type: string
+  *                       example: "3098765432"
+  *
+  *       400:
+  *         description: Datos inválidos
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 success:
+  *                   type: boolean
+  *                   example: false
+  *                 message:
+  *                   type: string
+  *             examples:
+  *               cuerpoVacio:
+  *                 summary: Sin campos para actualizar
+  *                 value:
+  *                   success: false
+  *                   message: Datos inválidos
+  *               nombreVacio:
+  *                 summary: Nombre vacío
+  *                 value:
+  *                   success: false
+  *                   message: El nombre no puede estar vacío
+  *               apellidoVacio:
+  *                 summary: Apellido vacío
+  *                 value:
+  *                   success: false
+  *                   message: El apellido no puede estar vacío
+  *               correoInvalido:
+  *                 summary: Correo con formato inválido
+  *                 value:
+  *                   success: false
+  *                   message: El correo no tiene un formato válido
+  *               correoDuplicado:
+  *                 summary: Correo ya registrado por otro usuario
+  *                 value:
+  *                   success: false
+  *                   message: El correo ya está registrado
+  *               campoNoPermitido:
+  *                 summary: Campo no permitido en el body
+  *                 value:
+  *                   success: false
+  *                   message: "Campo(s) no permitido(s): contrasena"
+  */
+routerAuth.put("/perfil", verifyToken, updateUserProfile);
 
 export default routerAuth;

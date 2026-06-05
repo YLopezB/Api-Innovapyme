@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach, afterAll } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../app.js';
-import { cleanTestUsers, disconnectDatabase } from '../setup/setupDatabase.js';
+import { cleanTestUsers } from '../setup/setupDatabase.js';
 
 // ─── Datos del usuario de prueba ────────────────────────────────────────────
 const USUARIO_VALIDO = {
@@ -18,14 +18,8 @@ beforeEach(async () => {
   await cleanTestUsers();
 });
 
-afterAll(async () => {
-  // Limpieza final y cierre de conexión
-  await cleanTestUsers();
-  await disconnectDatabase();
-});
-
 // ─── Suite PU-01 ─────────────────────────────────────────────────────────────
-describe('PU-01 | AuthService — Registrar usuario', () => {
+describe.sequential('PU-01 | AuthService — Registrar usuario', () => {
   /**
    * Caso principal: correo no existente → se crea el usuario correctamente
    */
