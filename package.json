@@ -6,6 +6,9 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage --reporter=default --reporter=html",
+    "test:ui": "vitest --ui",
+    "test:preview": "npx serve -l 4000 html",
     "start": "node src/index.js",
     "dev": "nodemon --no-deprecation src/index.js",
     "seed": "node src/config/scripts/UserTypes.js"
@@ -36,11 +39,24 @@
     "swagger-ui-express": "^5.0.1"
   },
   "vitest": {
-    "include": ["src/tests/**/*.test.js"],
-    "pool": "forks"
+    "include": [
+      "src/tests/**/*.test.js"
+    ],
+    "pool": "forks",
+    "coverage": {
+      "provider": "v8",
+      "reporter": [
+        "text",
+        "html",
+        "lcov"
+      ],
+      "reportsDirectory": "./coverage"
+    }
   },
   "devDependencies": {
     "@types/node": "^25.6.0",
+    "@vitest/coverage-v8": "^4.1.8",
+    "@vitest/ui": "^4.1.8",
     "nodemon": "^3.1.14",
     "prisma": "^7.8.0",
     "supertest": "^7.2.2",

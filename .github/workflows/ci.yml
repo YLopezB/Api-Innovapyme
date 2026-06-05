@@ -61,7 +61,22 @@ jobs:
         run: npm run seed
 
       - name: Run integration tests
-        run: npm test
+        run: npm run test:coverage
+
+      # Guía para visualizar los reportes descargados desde los artefactos del CI:
+      # 1. Descargar y descomprimir el archivo `test-and-coverage-report.zip`.
+      # 2. Abrir la terminal en la carpeta descomprimida y ejecutar:
+      #    - Para ver el reporte de pruebas: `npx serve html`
+      #    - Para ver la cobertura de código: `npx serve coverage`
+      - name: Upload Test Results and Coverage Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-and-coverage-report
+          path: |
+            coverage/
+            html/
+          retention-days: 14
 
       - name: Start API
         run: |
