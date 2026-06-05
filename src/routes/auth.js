@@ -247,7 +247,84 @@ routerAuth.post(
  */
 routerAuth.get("/perfil", verifyToken, getUserProfile);
 
-
+ /**
+  * @swagger
+  * /api/auth/perfil:
+  *   put:
+  *     summary: Actualizar perfil de usuario
+  *     description: Permite al usuario autenticado actualizar su perfil
+  *     tags: [Auth]
+  *     security:
+  *       - bearerAuth: []
+  *     requestBody:
+  *       required: true
+  *       content:
+  *         application/json:
+  *           schema:
+  *             type: object
+  *             properties:
+  *               nombre:
+  *                 type: string
+  *                 example: Juana
+  *               apellido:
+  *                 type: string
+  *                 example: Gómez
+  *               correo:
+  *                 type: string
+  *                 format: email
+  *                 example: juana.gomez@example.com
+  *               telefono:
+  *                 type: string
+  *                 example: "3098765432"
+  *
+  *     responses:
+  *       200:
+  *         description: Perfil actualizado exitosamente
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 success:
+  *                   type: boolean
+  *                   example: true
+  *                 message:
+  *                   type: string
+  *                   example: Actualizado
+  *                 data:
+  *                   type: object
+  *                   properties:
+  *                     id:
+  *                       type: integer
+  *                       example: 1
+  *                     nombre:
+  *                       type: string
+  *                       example: Juana
+  *                     apellido:
+  *                       type: string
+  *                       example: Gómez
+  *                     correo:
+  *                       type: string
+  *                       format: email
+  *                       example: juana.gomez@example.com
+  *                     telefono:
+  *                       type: string
+  *                       example: "3098765432"
+  *
+  *       400:
+  *         description: Datos inválidos
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 success:
+  *                   type: boolean
+  *                   example: false
+  *                 message:
+  *                   type: string
+  *                   example: Datos inválidos
+  */
 routerAuth.put("/perfil", verifyToken, updateUserProfile);
 
 export default routerAuth;
