@@ -38,21 +38,6 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   },
-  "vitest": {
-    "include": [
-      "src/tests/**/*.test.js"
-    ],
-    "pool": "forks",
-    "coverage": {
-      "provider": "v8",
-      "reporter": [
-        "text",
-        "html",
-        "lcov"
-      ],
-      "reportsDirectory": "./coverage"
-    }
-  },
   "devDependencies": {
     "@types/node": "^25.6.0",
     "@vitest/coverage-v8": "^4.1.8",

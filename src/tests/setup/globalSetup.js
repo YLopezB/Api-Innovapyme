@@ -1,6 +1,14 @@
-export default function setup() {
+import 'dotenv/config';
+
+export default async function setup() {
+  const { cleanAllTestData, disconnectDatabase } = await import(
+    './setupDatabase.js'
+  );
+
+  await cleanAllTestData();
+
   return async () => {
-    const { disconnectDatabase } = await import('./setupDatabase.js');
+    await cleanAllTestData();
     await disconnectDatabase();
   };
 }

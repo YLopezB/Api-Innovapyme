@@ -1,7 +1,11 @@
-import { describe, it, expect, afterAll } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import request from 'supertest';
 import app from '../../app.js';
-import prisma from '../../config/database.js';
+import {
+  loginTestUser,
+  registerTestUser,
+} from '../helpers/testAuth.js';
+import { cleanTestUsersByEmails } from '../setup/setupDatabase.js';
 
 const CONTRASENA = 'Password123!';
 
@@ -57,24 +61,13 @@ const USUARIOS = {
   },
 };
 
-async function limpiarCorreos(correos) {
-  await prisma.usuario.deleteMany({
-    where: { correo: { in: correos } },
-  });
-}
-
 async function registrarUsuario(usuario) {
-  await limpiarCorreos([usuario.correo]);
-  const response = await request(app)
-    .post('/api/auth/registro')
-    .send(usuario);
+  const response = await registerTestUser(app, usuario);
   expect(response.status).toBe(201);
 }
 
 async function obtenerToken(correo, contrasena) {
-  const response = await request(app)
-    .post('/api/auth/login')
-    .send({ correo, contrasena });
+  const response = await loginTestUser(app, correo, contrasena);
 
   expect(response.status).toBe(200);
   expect(response.body.token).toBeDefined();
@@ -82,13 +75,7 @@ async function obtenerToken(correo, contrasena) {
   return response.body.token;
 }
 
-const PU02_EMAILS = Object.values(USUARIOS).map((u) => u.correo);
-
-afterAll(async () => {
-  await limpiarCorreos(PU02_EMAILS);
-});
-
-describe('PU-02 | AuthService — Actualizar perfil', () => {
+describe.sequential('PU-02 | AuthService — Actualizar perfil', () => {
   it('debe retornar HTTP 200 cuando los datos son válidos', async () => {
     const usuario = USUARIOS.valido;
     await registrarUsuario(usuario);
@@ -169,7 +156,7 @@ describe('PU-02 | AuthService — Actualizar perfil', () => {
   it('debe retornar HTTP 400 cuando el correo ya está registrado', async () => {
     const usuarioA = USUARIOS.duplicadoA;
     const usuarioB = USUARIOS.duplicadoB;
-    await limpiarCorreos([usuarioA.correo, usuarioB.correo]);
+    await cleanTestUsersByEmails([usuarioA.correo, usuarioB.correo]);
     await registrarUsuario(usuarioA);
     await registrarUsuario(usuarioB);
     const token = await obtenerToken(usuarioA.correo, usuarioA.contrasena);
