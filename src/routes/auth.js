@@ -119,15 +119,15 @@ routerAuth.post(
  *             schema:
  *               type: object
  *               properties:
- *                 success:
- *                   type: boolean
- *                   example: true
  *                 message:
  *                   type: string
- *                   example: Login exitoso
+ *                   example: Usuario logueado correctamente
  *                 token:
  *                   type: string
  *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *                 success:
+ *                   type: boolean
+ *                   example: true
  *       401:
  *         description: Credenciales inválidas
  *         content:

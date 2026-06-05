@@ -125,6 +125,10 @@ Ejecuta migraciones existentes y no modifica datos existentes
 npm run seed
 ```
 
+>**Credenciales de administrador inicial:**  
+>Usuario: admin@example.com  
+>Contraseña: admin123
+
 ```bash
 npm run dev
 ```
