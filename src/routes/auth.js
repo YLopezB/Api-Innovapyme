@@ -323,7 +323,37 @@ routerAuth.get("/perfil", verifyToken, getUserProfile);
   *                   example: false
   *                 message:
   *                   type: string
-  *                   example: Datos inválidos
+  *             examples:
+  *               cuerpoVacio:
+  *                 summary: Sin campos para actualizar
+  *                 value:
+  *                   success: false
+  *                   message: Datos inválidos
+  *               nombreVacio:
+  *                 summary: Nombre vacío
+  *                 value:
+  *                   success: false
+  *                   message: El nombre no puede estar vacío
+  *               apellidoVacio:
+  *                 summary: Apellido vacío
+  *                 value:
+  *                   success: false
+  *                   message: El apellido no puede estar vacío
+  *               correoInvalido:
+  *                 summary: Correo con formato inválido
+  *                 value:
+  *                   success: false
+  *                   message: El correo no tiene un formato válido
+  *               correoDuplicado:
+  *                 summary: Correo ya registrado por otro usuario
+  *                 value:
+  *                   success: false
+  *                   message: El correo ya está registrado
+  *               campoNoPermitido:
+  *                 summary: Campo no permitido en el body
+  *                 value:
+  *                   success: false
+  *                   message: "Campo(s) no permitido(s): contrasena"
   */
 routerAuth.put("/perfil", verifyToken, updateUserProfile);
 
