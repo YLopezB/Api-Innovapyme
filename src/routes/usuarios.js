@@ -2,6 +2,7 @@ import { Router } from "express";
 import verifyToken from "../middlewares/verifyToken.js";
 import isAdmin from "../middlewares/isAdmin.js";
 import listUsuarios from "../controller/usuarios/listUsuarios.js";
+import changeUserRole from "../controller/usuarios/changeUserRole.js";
 
 const routerUsuarios = Router();
 
@@ -88,5 +89,151 @@ const routerUsuarios = Router();
  *                   example: "Sin permiso"
  */
 routerUsuarios.get("/", verifyToken, isAdmin, listUsuarios);
+
+/**
+ * @swagger
+ * /api/usuarios/{id}/rol:
+ *   put:
+ *     summary: Cambiar rol de usuario (solo Admin)
+ *     description: Permite a un Administrador actualizar el tipo de usuario (rol) de otro usuario.
+ *     tags: [Usuarios]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID del usuario a actualizar
+ *         example: 5
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - id_tipo_usuario
+ *             properties:
+ *               id_tipo_usuario:
+ *                 type: integer
+ *                 description: ID del tipo de usuario (1 Administrador, 2 Cliente, 3 Visitante)
+ *                 example: 2
+ *     responses:
+ *       200:
+ *         description: Rol actualizado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Actualizado
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       example: 5
+ *                     nombre:
+ *                       type: string
+ *                       example: Juan
+ *                     apellido:
+ *                       type: string
+ *                       example: Pérez
+ *                     correo:
+ *                       type: string
+ *                       example: juan.perez@example.com
+ *                     telefono:
+ *                       type: string
+ *                       example: "3123456789"
+ *                     estado:
+ *                       type: boolean
+ *                       example: true
+ *                     fecha_creacion:
+ *                       type: string
+ *                       example: "2026-06-04T19:38:29.000Z"
+ *                     id_tipo_usuario:
+ *                       type: integer
+ *                       example: 2
+ *       400:
+ *         description: Datos inválidos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *             examples:
+ *               bodyVacio:
+ *                 summary: Sin id_tipo_usuario
+ *                 value:
+ *                   success: false
+ *                   message: Datos inválidos
+ *               rolInvalido:
+ *                 summary: id_tipo_usuario no es un entero válido
+ *                 value:
+ *                   success: false
+ *                   message: id_tipo_usuario debe ser un entero válido
+ *               rolNoExiste:
+ *                 summary: Tipo de usuario inexistente
+ *                 value:
+ *                   success: false
+ *                   message: id_tipo_usuario no existe
+ *               campoNoPermitido:
+ *                 summary: Campo no permitido en el body
+ *                 value:
+ *                   success: false
+ *                   message: "Campo(s) no permitido(s): nombre"
+ *       401:
+ *         description: Token no proveído o inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Token no proveído
+ *       403:
+ *         description: Sin permiso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Sin permiso
+ *       404:
+ *         description: Usuario no encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: No encontrado
+ */
+routerUsuarios.put("/:id/rol", verifyToken, isAdmin, changeUserRole);
 
 export default routerUsuarios;
