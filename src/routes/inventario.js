@@ -5,6 +5,7 @@ import createInventario from "../controller/inventario/createInventario.js";
 import updateInventario from "../controller/inventario/updateInventario.js";
 import deleteInventario from "../controller/inventario/deleteInventario.js";
 import verifyToken from "../middlewares/verifyToken.js";
+import alertProducto from "../controller/inventario/alertProducto.js";
 
 const routerInventario = Router();
 
@@ -259,7 +260,7 @@ const routerInventario = Router();
  *                       example: "2021-01-01"
  *                     fecha_actualizacion:
  *                       type: string
- *                       example: "2021-01-01" 
+ *                       example: "2021-01-01"
  *       400:
  *         description: Datos inválidos o cuerpo vacío
  *         content:
@@ -428,7 +429,7 @@ const routerInventario = Router();
  *                     descripcion:
  *                       type: string
  *                       example: "Descripción del producto 1"
- *                     cantidad: 
+ *                     cantidad:
  *                       type: integer
  *                       example: 10
  *                     precio_unitario:
@@ -469,11 +470,87 @@ const routerInventario = Router();
  *                 message:
  *                   type: string
  *                   example: Token no proveído o inválido
+ *
+ */
+
+/**
+ * @swagger
+ * /api/inventario/alertas:
+ *   get:
+ *     summary: Listar productos en alerta por bajo stock
+ *     description: Retorna productos con cantidad menor o igual al stock especificado (por defecto 5).
+ *     tags: [Inventario]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: stock
+ *         schema:
+ *           type: integer
+ *           default: 5
+ *         description: Umbral de stock para alerta
+ *     responses:
+ *       200:
+ *         description: Lista de productos en alerta
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Lista de productos en alerta
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         example: 1
+ *                       nombre:
+ *                         type: string
+ *                         example: "Producto 1"
+ *                       descripcion:
+ *                         type: string
+ *                         example: "Descripción del producto 1"
+ *                       cantidad:
+ *                         type: integer
+ *                         example: 3
+ *                       precio_unitario:
+ *                         type: number
+ *                         example: 100.00
+ *                       categoria:
+ *                         type: string
+ *                         example: "Categoria 1"
+ *                       fecha_creacion:
+ *                         type: string
+ *                         example: "2021-01-01"
+ *                       fecha_actualizacion:
+ *                         type: string
+ *                         example: "2021-01-01"
+ *       401:
+ *         description: Token no proveído o inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Token no proveído o inválido
  */
 
 routerInventario.get("/", verifyToken, listInventario);
-routerInventario.post("/", verifyToken, createInventario);
+routerInventario.get("/alertas", verifyToken, alertProducto);
 routerInventario.get("/:id", verifyToken, getInventarioById);
+routerInventario.post("/", verifyToken, createInventario);
 routerInventario.put("/:id", verifyToken, updateInventario);
 routerInventario.delete("/:id", verifyToken, deleteInventario);
 
