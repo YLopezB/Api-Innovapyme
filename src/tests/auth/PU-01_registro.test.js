@@ -1,9 +1,8 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import request from 'supertest';
 import app from '../../app.js';
-import { cleanTestUsers } from '../setup/setupDatabase.js';
+import { registerTestUser } from '../helpers/testAuth.js';
 
-// ─── Datos del usuario de prueba ────────────────────────────────────────────
 const USUARIO_VALIDO = {
   nombre: 'Test',
   apellido: 'PU01',
@@ -12,21 +11,9 @@ const USUARIO_VALIDO = {
   telefono: '3001234567',
 };
 
-// ─── Limpieza ────────────────────────────────────────────────────────────────
-beforeEach(async () => {
-  // Garantiza que el correo no exista antes de cada test
-  await cleanTestUsers();
-});
-
-// ─── Suite PU-01 ─────────────────────────────────────────────────────────────
 describe.sequential('PU-01 | AuthService — Registrar usuario', () => {
-  /**
-   * Caso principal: correo no existente → se crea el usuario correctamente
-   */
   it('debe retornar HTTP 201 con success:true y un token cuando el correo no existe', async () => {
-    const response = await request(app)
-      .post('/api/auth/registro')
-      .send(USUARIO_VALIDO);
+    const response = await registerTestUser(app, USUARIO_VALIDO);
 
     expect(response.status).toBe(201);
     expect(response.body.success).toBe(true);
@@ -35,15 +22,9 @@ describe.sequential('PU-01 | AuthService — Registrar usuario', () => {
     expect(typeof response.body.token).toBe('string');
   });
 
-  /**
-   * Caso borde: correo duplicado → debe rechazar con 409
-   * (complementa PU-01 verificando que la unicidad funciona)
-   */
   it('debe retornar HTTP 409 si el correo ya está registrado', async () => {
-    // Primer registro (exitoso)
-    await request(app).post('/api/auth/registro').send(USUARIO_VALIDO);
+    await registerTestUser(app, USUARIO_VALIDO);
 
-    // Segundo registro con el mismo correo
     const response = await request(app)
       .post('/api/auth/registro')
       .send(USUARIO_VALIDO);
