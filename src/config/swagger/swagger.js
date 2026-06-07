@@ -41,6 +41,10 @@ const options = {
         url: "http://localhost:3000",
         description: "Servidor local de desarrollo",
       },
+      {
+        url: "https://api-innovapyme.up.railway.app",
+        description: "Servidor de producción",
+      },
     ],
   },
   apis: ["./src/routes/*.js"],

@@ -8,7 +8,7 @@ import prisma from '../../config/database.js';
  */
 export const TEST_EMAIL_SUFFIX = '@example.com';
 
-export const TEST_EMAIL_PREFIXES = ['test.', 'admin.pu', 'user.pu'];
+export const TEST_EMAIL_PREFIXES = ['test.', 'admin.pu', 'user.pu', 'user.ventas', 'cliente.ventas', 'user.listar.ventas', 'cliente.listar.ventas', 'user.obtener.venta', 'cliente.obtener.venta', 'user.listar.inventario', 'user.obtener.inventario', 'user.crear.inventario', 'user.actualizar.inventario', 'user.eliminar.inventario', 'user.alertas.inventario'];
 
 export const TEST_EMAIL_EXACT = [];
 
