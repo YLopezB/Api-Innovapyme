@@ -2,6 +2,7 @@ import { Router } from "express";
 import routerAuth from "./auth.js";
 import routerInventario from "./inventario.js";
 import routerUsuarios from "./usuarios.js";
+import routerVentas from "./ventas.js";
 
 const routerIndex = Router();
 
@@ -16,5 +17,6 @@ const routerIndex = Router();
 routerIndex.use('/auth', routerAuth);
 routerIndex.use('/inventario', routerInventario);
 routerIndex.use('/usuarios', routerUsuarios);
+routerIndex.use('/ventas', routerVentas);
 
 export default routerIndex;
