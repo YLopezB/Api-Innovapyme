@@ -1,28 +1,70 @@
-# Api-Innovapyme
+# 1. Nombre del proyecto 
 
-API desarrollada para que microempresarios gestionen inventarios, ventas e historial de operaciones.
+Api-Innovapyme
+
+---
+# 2. Descripción general
+
+API REST desarrollada para que microempresarios gestionen inventarios, ventas e historial de operaciones. El sistema permite el control de productos, registro de ventas con descuento automático de stock, y seguimiento de todas las operaciones realizadas por los usuarios.
 
 ---
 
-# Tecnologías utilizadas
+# 3. Tecnologías utilizadas
 
-* Node.js
-* Express
-* Prisma ORM
-* MySQL / MariaDB
-* JWT (Autenticación)
-* Swagger (Documentación)
-* dotenv
+* Node.js - Entorno de ejecución JavaScript
+* Express - Framework web para Node.js
+* Prisma ORM - ORM para base de datos
+* MySQL / MariaDB - Sistema de gestión de bases de datos relacional
+* JWT (JSON Web Tokens) - Sistema de autenticación
+* Swagger (swagger-jsdoc, swagger-ui-express) - Documentación de API
+* dotenv - Gestión de variables de entorno
+* bcryptjs - Encriptación de contraseñas
+* cors - Middleware para habilitar CORS
+* morgan - Middleware de logging HTTP
+* Vitest - Framework de pruebas
+* Supertest - Biblioteca para testing de HTTP endpoints
 
 ---
 
-# PASO A PASO
+# 4. Arquitectura del sistema
+
+El proyecto sigue una arquitectura en capas con separación de responsabilidades:
+
+```bash
+src/
+├── app.js              # Configuración principal de Express
+├── index.js            # Punto de entrada del servidor
+├── config/             # Configuraciones (database, swagger, scripts)
+├── controller/         # Lógica de negocio de cada endpoint
+├── middlewares/        # Middlewares (autenticación, validación)
+├── repositories/       # Acceso a datos (Prisma)
+├── routes/             # Definición de rutas y documentación Swagger
+└── tests/              # Suite de pruebas unitarias
+```
+## Patron de diseño
+
+* Controllers: Manejan la lógica de negocio y validaciones
+* Repositories: Abstraen el acceso a la base de datos con Prisma
+* Middlewares: Interceptan requests para autenticación y validación
+* Routes: Definen endpoints y documentación Swagger
+---
+
+# 5. Requisitos previos
+
+* Node.js (v18 o superior)
+* npm (v9 o superior)
+* MySQL o MariaDB instalado y configurado
+* Git (para clonar el repositorio)
+
+---
+
+# 6.Paso a Paso
 
 Sigue estos pasos en orden. No te saltes ninguno.
 
 ---
 
-## 1 Instalar Node.js
+## 1. Instalar Node.js
 
 Descarga e instala Node.js:
 
@@ -37,7 +79,7 @@ npm -v
 
 ---
 
-## 2 Instalar MySQL
+## 2. Instalar MySQL
 
 * MySQL: https://dev.mysql.com/downloads/
 
@@ -49,7 +91,7 @@ mysql -u root -p
 
 ---
 
-## 3 Clonar el repositorio
+## 3. Clonar el repositorio
 
 ```bash
 git clone https://github.com/YLopezB/Api-Innovapyme.git
@@ -58,7 +100,7 @@ cd Api-Innovapyme
 
 ---
 
-## 4 Instalar dependencias
+## 4. Instalar dependencias
 
 ```bash
 npm install
@@ -66,7 +108,7 @@ npm install
 
 ---
 
-## 5 Crear archivo `.env`
+## 5. Crear archivo `.env`
 
 En la raíz del proyecto:
 
@@ -94,7 +136,7 @@ JWT_SECRET=un_secreto_muy_seguro
 
 ---
 
-## 6 Configurar Prisma
+## 6. Configurar Prisma
 
 ### En desarrollo (local)
 
@@ -117,7 +159,7 @@ Ejecuta migraciones existentes y no modifica datos existentes
 
 ---
 
-## 7 Ejecutar el servidor
+## 7. Ejecutar el servidor
 
 ### Modo desarrollo:
 
@@ -145,7 +187,19 @@ npm start
 
 ---
 
-## 8 Probar la API
+## 8. Ejecución de pruebas
+
+Ejecutar tdas las pruebas:
+```bash
+npm run test
+```
+Ejecutar pruebas con cobertura y reporteria:
+```bash
+npm run test:coverage
+```
+---
+
+## 9. Probar la API
 
 Abre en tu navegador:
 
@@ -155,17 +209,54 @@ http://localhost:3000
 
 ---
 
-## 9 Ver documentación Swagger
+# 7. Documentación de endpoints
 
+La API cuenta con los siguientes módulos principales:
+
+### Autenticación (/api/auth)
+* `POST /api/auth/register` - Registro de usuarios
+* `POST /api/auth/login` - Inicio de sesión
+* `GET /api/auth/profile` - Obtener perfil del usuario
+* `PUT /api/auth/profile` - Actualización de perfil
+### Usuarios (/api/usuarios)
+* `GET /api/usuarios` - Listar usuarios (paginado)
+* `PUT /api/usuarios/:id/rol` - Cambiar rol de usuario
+* `DELETE /api/usuarios/:id/desactivar` - Desactivar usuario
+* `PATCH /api/usuarios/:id/reactivar` - Reactivar usuario
+### Inventario (/api/inventario)
+* `GET /api/inventario` - Listar productos (paginado)
+* `GET /api/inventario/:id` - Obtener producto por ID
+* `POST /api/inventario` - Crear producto
+* `PUT /api/inventario/:id` - Actualizar producto
+* `DELETE /api/inventario/:id` - Eliminar producto
+* `GET /api/inventario/alertas` - Productos en alerta por bajo stock
+### Ventas (/api/ventas)
+* `GET /api/ventas` - Listar ventas (paginado)
+* `GET /api/ventas/:id` - Obtener venta por ID
+* `POST /api/ventas` - Registrar venta (descuenta stock automáticamente)
+#### Autenticación: Todos los endpoints requieren token JWT en el header Authorization: Bearer <token>, excepto los endpoints de registro y login.
+
+---
+
+# 8. Enlace a local
+### Swagger
 ```
 http://localhost:3000/docs
 ```
-
 Aquí puedes probar todos los endpoints directamente.
 
 ---
 
-# Posibles errores
+# 9. Enlace producción
+### Swagger
+```
+https://api-innovapyme-production.up.railway.app/docs
+```
+Aquí puedes probar todos los endpoints directamente.
+
+---
+
+# 10. Posibles errores
 
 ### Error de conexión a la base de datos
 
@@ -196,14 +287,16 @@ Utiliza otro puerto de tu preferencia
 
 ---
 
+# 11. Integrantes del equipo
 
-# Licencia
-
-MIT
+* YLopezB - https://github.com/YLopezB
+* yeison495 - https://github.com/yeison495
+* Chris-Maiguel - https://github.com/Chris-Maiguel
 
 ---
 
-# Autores
+# Licencia
 
-Proyecto universitario - InnovaPyme
-
+* MIT
+* Repositorio: https://github.com/YLopezB/Api-Innovapyme
+---
