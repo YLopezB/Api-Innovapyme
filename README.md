@@ -289,9 +289,9 @@ Utiliza otro puerto de tu preferencia
 
 # 11. Integrantes del equipo
 
-* YLopezB - https://github.com/YLopezB
-* yeison495 - https://github.com/yeison495
-* Chris-Maiguel - https://github.com/Chris-Maiguel
+* Yeison Andres Lopez Burbano - https://github.com/YLopezB
+* Yeison Berbesi Chapeta - https://github.com/yeison495
+* Chris Maiguel Rodriguez - https://github.com/Chris-Maiguel
 
 ---
 
