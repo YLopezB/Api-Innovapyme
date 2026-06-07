@@ -90,9 +90,36 @@ async function setupTestData() {
 
 describe.sequential('PU-02 | Ventas - Listar ventas', () => {
   beforeAll(async () => {
-    await prisma.venta.deleteMany();
-    await prisma.inventario.deleteMany();
-    await prisma.historial.deleteMany();
+    const usuario = await prisma.usuario.findUnique({
+      where: { correo: USER_TEST.correo },
+      select: { id: true },
+    });
+    const cliente = await prisma.usuario.findUnique({
+      where: { correo: CLIENTE_TEST.correo },
+      select: { id: true },
+    });
+
+    if (usuario || cliente) {
+      const userIds = [];
+      if (usuario) userIds.push(usuario.id);
+      if (cliente) userIds.push(cliente.id);
+
+      await prisma.venta.deleteMany({
+        where: {
+          id_usuario: { in: userIds },
+        },
+      });
+      await prisma.inventario.deleteMany({
+        where: {
+          id_usuario: { in: userIds },
+        },
+      });
+      await prisma.historial.deleteMany({
+        where: {
+          id_usuario: { in: userIds },
+        },
+      });
+    }
     await cleanTestUsersByEmails([USER_TEST.correo, CLIENTE_TEST.correo]);
   });
 
